@@ -1,0 +1,27 @@
+from qiskit import QuantumCircuit, transpile
+from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2
+
+# Criar um circuito quântico simples
+qc = QuantumCircuit(2)
+qc.h(0)  # Porta Hadamard no qubit 0
+qc.cx(0, 1)  # Porta CNOT para criar o emaranhamento
+qc.measure_all()  # Medição dos qubits
+
+# Conectar ao IBM Quantum
+service = QiskitRuntimeService()
+
+# Escolher um backend real
+backend = service.backend("ibm_brisbane")  # Computador quântico real
+
+# Transpilar o circuito para o backend escolhido
+qc = transpile(qc, backend)
+
+# Criar um SamplerV2
+sampler = SamplerV2(backend=backend)  # Agora o backend é passado diretamente
+
+# Executar o circuito
+job = sampler.run([qc])  # Passando a lista de circuitos
+
+# Obter resultados
+result = job.result()
+print("Resultados:", result.quasi_dists[0])  # Saída do Qiskit Runtime
