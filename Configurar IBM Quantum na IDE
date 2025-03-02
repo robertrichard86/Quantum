@@ -1,0 +1,15 @@
+from qiskit_ibm_runtime import QiskitRuntimeService
+
+# Salvar a conta com overwrite=True para substituir a conta existente
+QiskitRuntimeService.save_account(
+    channel="ibm_quantum",
+    token="INSERIR TOKEN AQUI",
+    overwrite=True  # Adicione esta linha para sobrescrever a conta existente
+)
+
+# Carregar a conta
+service = QiskitRuntimeService(channel="ibm_quantum")
+
+# Listar backends disponíveis
+for backend in service.backends():
+    print(backend)
